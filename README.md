@@ -4,12 +4,16 @@ This is a full-stack notes application built with Node.js + Express + MongoDB fo
 
 ## Project Structure
 
+```
+
 notes-app/
 ├── backend/ # Node.js + Express + MongoDB backend
 ├── frontend/ # React + Vite frontend
 ├── pnpm-workspace.yaml
 ├── package.json # root workspace
 └── README.md
+
+```
 
 ### Backend
 
