@@ -1,0 +1,22 @@
+{
+  "name": "notes-app",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm -F backend dev",
+    "frontend": "pnpm -F frontend dev",
+    "backend": "pnpm -F backend dev",
+    "build": "pnpm -F frontend build && pnpm -F backend build",
+    "test": "pnpm -F backend test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.23.0"
+}
