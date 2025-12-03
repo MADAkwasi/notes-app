@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import path from "path";
+import path from "node:path";
 import { EnvConfig } from "../types/env.type";
 
 dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
@@ -11,7 +11,7 @@ const DB =
   ) || "";
 
 export const env: EnvConfig = {
-  PORT: Number(process.env.PORT) ?? 3000,
+  PORT: Number(process.env.PORT),
   DB_STRING: DB,
   DB_PASSWORD: process.env.DB_PASSWORD ?? "",
   JWT_SECRET: process.env.JWT_SECRET ?? "default_jwt_secret",
