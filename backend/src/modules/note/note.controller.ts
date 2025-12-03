@@ -35,9 +35,12 @@ export default class NoteController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { userId, params } = req;
+    const {
+      userId,
+      params: { noteId },
+    } = req;
 
-    const note = await noteService.getNote(userId!, params.noteId);
+    const note = await noteService.getNote(userId!, noteId);
 
     if (!note) return next(new AppError("Note not found", 404));
 
@@ -54,9 +57,12 @@ export default class NoteController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { userId, params } = req;
+    const {
+      userId,
+      params: { noteId },
+    } = req;
 
-    const isDeleted = await noteService.deleteNote(userId!, params.noteId);
+    const isDeleted = await noteService.deleteNote(userId!, noteId);
 
     if (!isDeleted) return next(new AppError("Note not found", 404));
 
@@ -71,9 +77,12 @@ export default class NoteController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { userId, params } = req;
+    const {
+      userId,
+      params: { noteId },
+    } = req;
 
-    const isRestored = await noteService.restoreNote(userId!, params.noteId);
+    const isRestored = await noteService.restoreNote(userId!, noteId);
 
     if (!isRestored) return next(new AppError("Note not found", 404));
 
@@ -88,10 +97,13 @@ export default class NoteController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { userId, params } = req;
-    const { title, content, tags } = req.body;
+    const {
+      userId,
+      params: { noteId },
+      body: { title, content, tags },
+    } = req;
 
-    const note = await noteService.updateNote(userId!, params.noteId, {
+    const note = await noteService.updateNote(userId!, noteId, {
       title,
       content,
       tags,
