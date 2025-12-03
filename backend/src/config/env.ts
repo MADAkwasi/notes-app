@@ -1,15 +1,8 @@
 import dotenv from "dotenv";
 import path from "path";
+import { EnvConfig } from "../types/env.type";
 
-dotenv.config({ path: path.resolve(__dirname, "../../../config.env") });
-
-interface EnvConfig {
-  PORT: number;
-  DB_STRING: string;
-  DB_PASSWORD: string;
-  JWT_SECRET: string;
-  JWT_EXPIRES_IN: string;
-}
+dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
 
 const DB =
   process.env.DB_STRING?.replace(
@@ -23,4 +16,5 @@ export const env: EnvConfig = {
   DB_PASSWORD: process.env.DB_PASSWORD ?? "",
   JWT_SECRET: process.env.JWT_SECRET ?? "default_jwt_secret",
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN ?? "1d",
+  NODE_ENV: process.env.NODE_ENV ?? "development",
 };
