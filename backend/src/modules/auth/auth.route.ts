@@ -27,4 +27,6 @@ router
     AuthController.updatePassword
   );
 
+router.route("/me").get(protect, AuthController.getMe);
+
 export default router;
