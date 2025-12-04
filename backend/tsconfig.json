@@ -8,7 +8,7 @@
     "strict": true,
     "skipLibCheck": true,
     "typeRoots": ["./src/types", "./node_modules/@types"],
-    "types": ["node", "express"],
+    // "types": ["node", "express"],
     "moduleResolution": "node"
   },
   "include": ["src"]
