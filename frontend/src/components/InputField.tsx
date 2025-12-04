@@ -1,61 +1,64 @@
 import type { FieldErrors, Path, UseFormRegister } from "react-hook-form";
-import type { SignupData } from "../utils/interfaces/auth.interface";
 import { useState, type ReactElement } from "react";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
-interface InputProps {
+interface InputProps<TFormValues extends Record<string, unknown>> {
   placeholder: string;
-  fieldName: Path<SignupData>;
+  fieldName: Path<TFormValues>;
   type?: "text" | "password";
-  register: UseFormRegister<SignupData>;
-  errors: FieldErrors<SignupData>;
+  register: UseFormRegister<TFormValues>;
+  errors: FieldErrors<TFormValues>;
 }
 
-export default function InputField({
+export default function InputField<
+  TFormValues extends Record<string, unknown>
+>({
   placeholder,
   fieldName,
   register,
   type = "text",
   errors,
-}: Readonly<InputProps>): ReactElement {
+}: Readonly<InputProps<TFormValues>>): ReactElement {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const handlePasswordVisibility = () => setIsPasswordVisible((bool) => !bool);
+  const handlePasswordVisibility = () => setIsPasswordVisible((prev) => !prev);
 
-  const returnInputType = () =>
-    type === "password" && !isPasswordVisible ? "password" : type;
+  const inputType = type === "password" && isPasswordVisible ? "text" : type;
+
+  const getErrorMessage = (message: unknown) => {
+    if (typeof message === "string") return message;
+    if (Array.isArray(message)) return message.join(", ");
+    return "";
+  };
 
   return (
     <>
-      {" "}
       <div className="relative">
         <input
-          type={
-            type === "password" && isPasswordVisible
-              ? "text"
-              : returnInputType()
-          }
+          type={inputType}
           placeholder={placeholder}
-          {...register(fieldName, { required: true })}
-          className="border w-full text-white border-gray-200 pl-3 pr-10 py-3 rounded-lg active:outline focus:outline outline-white placeholder:text-sm placeholder:text-gray-300"
+          {...register(fieldName)}
+          className="border w-full text-white border-gray-200 pl-3 pr-10 py-3 rounded-lg focus:outline outline-white placeholder:text-sm placeholder:text-gray-300"
         />
+
         {type === "password" && (
           <button
-            onClick={handlePasswordVisibility}
             type="button"
             className="cursor-pointer"
+            onClick={handlePasswordVisibility}
           >
             {isPasswordVisible ? (
-              <IoEyeOutline className="absolute right-1 top-1/2 -translate-1/2 text-white text-lg" />
+              <IoEyeOutline className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-lg" />
             ) : (
-              <IoEyeOffOutline className="absolute right-1 top-1/2 -translate-1/2 text-white text-lg" />
+              <IoEyeOffOutline className="absolute right-4 top-1/2 -translate-y-1/2 text-white text-lg" />
             )}
           </button>
         )}
       </div>
-      {errors[fieldName]?.message && (
-        <p className="text-xs text-red-500">{errors[fieldName]?.message}</p>
-      )}
+
+      <p className="text-xs text-red-500">
+        {getErrorMessage(errors[fieldName]?.message)}
+      </p>
     </>
   );
 }

@@ -1,8 +1,7 @@
 import type { Path } from "react-hook-form";
-import type { SignupData } from "./auth.interface";
 
-export interface SignupFormField {
+export interface FormField<T> {
   id: number;
   placeholder: string;
-  fieldName: Path<SignupData>;
+  fieldName: Path<T>;
 }

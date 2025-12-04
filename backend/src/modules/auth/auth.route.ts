@@ -19,6 +19,8 @@ router
   .route("/login")
   .post(validate(loginUserSchema), catchAsync(AuthController.login));
 
+router.route("/logout").post(catchAsync(AuthController.logout));
+
 router
   .route("/update-password")
   .post(

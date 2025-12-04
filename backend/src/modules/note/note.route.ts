@@ -22,6 +22,7 @@ router
 router
   .route("/:noteId")
   .get(NoteController.getNote)
+  
   .patch(validate(updateNoteSchema), NoteController.updateNote)
   .delete(validate(noteParamSchema), NoteController.deleteNote);
 

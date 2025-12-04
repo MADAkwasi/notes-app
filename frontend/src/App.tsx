@@ -3,14 +3,17 @@ import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import SignupPage from "./pages/Signup";
 import RecycleBinPage from "./pages/RecycleBin";
+import DashboardLayout from "./core/layouts/Dashboard";
 
 export default function App() {
   return (
     <Routes>
-      <Route index element={<HomePage />} />
+      <Route path="/" element={<DashboardLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="/recycle-bin" element={<RecycleBinPage />} />
+      </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-      <Route path="/recycle-bin" element={<RecycleBinPage />} />
     </Routes>
   );
 }

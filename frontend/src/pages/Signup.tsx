@@ -4,11 +4,14 @@ import type { SignupData } from "../utils/interfaces/auth.interface";
 import InputField from "../components/InputField";
 import { signupFormFields } from "../utils/constants/form";
 import { type ReactElement } from "react";
-import { signup } from "../api/auth.service";
 import { signupSchema } from "../utils/schemas/authForm";
 import { zodResolver } from "@hookform/resolvers/zod";
+import AppButton from "../components/Button";
+import { FiLoader } from "react-icons/fi";
+import { useAuth } from "../utils/hooks/useAuth";
 
 export default function SignupPage(): ReactElement {
+  const { isLoading, signup, error } = useAuth();
   const {
     handleSubmit,
     register,
@@ -18,12 +21,7 @@ export default function SignupPage(): ReactElement {
   });
 
   const onSubmit: SubmitHandler<SignupData> = async (data) => {
-    try {
-      const res = await signup(data);
-      console.log(res);
-    } catch (err) {
-      console.error(err);
-    }
+    await signup(data);
   };
 
   return (
@@ -32,12 +30,12 @@ export default function SignupPage(): ReactElement {
         className="w-1/2 gap-4 flex flex-col"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-center text-2xl font-semibold my-4 text-blue-400">
+        <h1 className="text-center text-2xl font-semibold my-4 text-white">
           Create An Account
         </h1>
         {signupFormFields.map(({ id, placeholder, fieldName }) => (
           <div className="flex gap-2 w-full flex-col" key={id}>
-            <InputField
+            <InputField<SignupData>
               placeholder={placeholder}
               fieldName={fieldName}
               register={register}
@@ -48,9 +46,14 @@ export default function SignupPage(): ReactElement {
         ))}
 
         <div>
-          <button className="w-full rounded-xl bg-blue-400 py-3 mt-4 text-white">
-            Submit
-          </button>
+          <AppButton
+            variant="secondary"
+            title="Submit"
+            disabled={isLoading}
+            type="submit"
+          >
+            {isLoading ? <FiLoader className="animate-spin" /> : "Submit"}
+          </AppButton>
           <p className="text-center mt-2 text-white">
             Already have an account?{" "}
             <Link className="text-blue-400" to="/login">

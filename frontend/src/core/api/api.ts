@@ -9,7 +9,7 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      globalThis.location.href = "/login";
+      authStore.logout();
     }
     return Promise.reject(err);
   }
