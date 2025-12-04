@@ -1,7 +1,7 @@
 import type { IconType } from "react-icons";
 
 export interface NavigationOption {
-  id: number;
+  id: string;
   icon: IconType;
   label: string;
   path: string;

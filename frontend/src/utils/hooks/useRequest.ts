@@ -8,7 +8,7 @@ export function useRequest<T, A extends unknown[]>(
   const [error, setError] = useState<string | null>(null);
 
   const execute = useCallback(
-    async (...args: A): Promise<T | undefined> => {
+    async (...args: A): Promise<T | null> => {
       try {
         setIsLoading(true);
         setError(null);
@@ -18,7 +18,7 @@ export function useRequest<T, A extends unknown[]>(
         const message = axiosErr.response?.data?.message || "Request failed";
         setError(message);
 
-        return undefined;
+        return null;
       } finally {
         setIsLoading(false);
       }

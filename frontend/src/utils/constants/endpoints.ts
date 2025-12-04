@@ -5,4 +5,7 @@ export const endpoints = {
     logout: "/auth/logout",
     me: "/auth/me",
   },
+  notes: {
+    getUserNotes: 'notes/my-notes'
+  }
 };

@@ -1,35 +1,64 @@
-import { useEffect, type ReactElement } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import AppButton from "../../components/Button";
 import NavigationOption from "../../components/NavigationOption";
-import { additionalNavigation } from "../../utils/constants/navigation";
+import {
+  additionalNavigation,
+  recentNavigationGroup,
+} from "../../utils/constants/navigation";
 import DashboardSkeleton from "../../components/DashboardSkeleton";
 import { useAuth } from "../../utils/hooks/useAuth";
+import { useRequest } from "../../utils/hooks/useRequest";
+import { getUserNotesRequest } from "../api/note.service";
+import type { Note } from "../../utils/interfaces/note.interface";
 
 export default function DashboardLayout(): ReactElement {
+  const [userNotes, setUserNotes] = useState<Note[] | null>(null);
   const { user, logout, refreshUser, isFetchingUser } = useAuth();
+  const {
+    execute: getNotes,
+    isLoading: isFetchingNotes,
+    error,
+  } = useRequest(getUserNotesRequest);
 
   const handleLogout = async () => {
     await logout();
   };
 
   useEffect(() => {
-    void refreshUser();
-  }, [refreshUser]);
+    const fetchNotes = async () => {
+      try {
+        const notes = await getNotes();
+        setUserNotes(notes);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (!userNotes) {
+      void fetchNotes();
+    }
+  }, [getNotes, userNotes]);
+
+  useEffect(() => {
+    if (!user) void refreshUser();
+  }, [refreshUser, user]);
 
   return (
     <>
-      {isFetchingUser ? (
+      {isFetchingUser || isFetchingNotes ? (
         <DashboardSkeleton />
       ) : (
         <main className="flex w-screen h-screen">
           <section className="w-1/4 py-6 px-4 flex flex-col gap-4">
             <header className="flex flex-col gap-6">
               <div className="flex items-center justify-between ">
-                <img src="logo.svg" alt="logo" />
+                <Link to="/">
+                  <img src="logo.svg" alt="logo" />
+                </Link>
 
                 <AppButton
                   title="Search Note"
@@ -46,7 +75,11 @@ export default function DashboardLayout(): ReactElement {
             </header>
 
             <div className="my-3 flex flex-col gap-4">
-              <NavigationOption group={additionalNavigation} />
+              {userNotes && (
+                <NavigationOption
+                  group={recentNavigationGroup(userNotes.slice(0, 2))}
+                />
+              )}
               <NavigationOption group={additionalNavigation} />
             </div>
 
