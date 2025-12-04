@@ -3,20 +3,17 @@ import { IUser } from "../../types/user.type";
 import User from "../user/user.model";
 import { env } from "../../config/env";
 import { Types } from "mongoose";
-import { AuthResponse, LoginData, PasswordUpdate } from "../../types/auth.type";
+import { LoginData, PasswordUpdate } from "../../types/auth.type";
 
 class AuthService {
-  public async signupUser(data: IUser): Promise<AuthResponse> {
+  public async signupUser(data: IUser): Promise<string> {
     const user = await User.create(data);
     const token = this.generateToken(user._id);
 
-    return {
-      token,
-      user,
-    };
+    return token;
   }
 
-  public async loginUser(data: LoginData): Promise<AuthResponse | null> {
+  public async loginUser(data: LoginData): Promise<string | null> {
     const { email, password } = data;
 
     const user = await User.findOne({ email }).select("+password -__v");
@@ -26,16 +23,13 @@ class AuthService {
 
     const token = this.generateToken(user._id);
 
-    return {
-      token,
-      user,
-    };
+    return token;
   }
 
   public async updateUserPassword(
     userId: Types.ObjectId,
     data: PasswordUpdate
-  ): Promise<AuthResponse | null> {
+  ): Promise<string | null> {
     const { newPassword, currentPassword } = data;
     const user = await User.findById(userId).select("+password");
 
@@ -50,10 +44,7 @@ class AuthService {
 
     const token = this.generateToken(user._id);
 
-    return {
-      token,
-      user,
-    };
+    return token;
   }
 
   private generateToken(id: Types.ObjectId): string {

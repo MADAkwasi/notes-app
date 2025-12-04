@@ -7,9 +7,9 @@ import User from "../user/user.model";
 
 export default class AuthController {
   static async signup(req: Request, res: Response): Promise<void> {
-    const data = await authService.signupUser(req.body);
+    const token = await authService.signupUser(req.body);
 
-    setCookieHeaderAndSendResponse(res, 201, data);
+    setCookieHeaderAndSendResponse(res, 201, token);
   }
 
   static async login(
@@ -17,11 +17,11 @@ export default class AuthController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const data = await authService.loginUser(req.body);
+    const token = await authService.loginUser(req.body);
 
-    if (!data) return next(new AppError("Invalid Credentials", 401));
+    if (!token) return next(new AppError("Invalid Credentials", 401));
 
-    setCookieHeaderAndSendResponse(res, 200, data);
+    setCookieHeaderAndSendResponse(res, 200, token);
   }
 
   static async updatePassword(
@@ -30,14 +30,14 @@ export default class AuthController {
     next: NextFunction
   ): Promise<void> {
     const { userId, body } = req;
-    const data = await authService.updateUserPassword(
+    const token = await authService.updateUserPassword(
       userId as Types.ObjectId,
       body
     );
 
-    if (!data) return next(new AppError("Current Password is incorrect", 400));
+    if (!token) return next(new AppError("Current Password is incorrect", 400));
 
-    setCookieHeaderAndSendResponse(res, 200, data);
+    setCookieHeaderAndSendResponse(res, 200, token);
   }
 
   static async getMe(req: Request, res: Response): Promise<void> {
