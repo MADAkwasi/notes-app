@@ -54,11 +54,11 @@ export default class AuthController {
 
   static async logout(_req: Request, res: Response): Promise<void> {
     res.clearCookie("jwt", {
-      // httpOnly: true,
+      httpOnly: true,
       // secure: env.NODE_ENV === "production",
       // sameSite: "lax",
       sameSite: "none",
-      secure: false,
+      secure: true,
     });
 
     res.status(200).json({

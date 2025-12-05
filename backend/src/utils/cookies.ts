@@ -13,7 +13,7 @@ export const setCookieHeaderAndSendResponse = (
     // sameSite: "lax",
     httpOnly: true,
     sameSite: "none",
-    secure: false,
+    secure: true,
   });
 
   res.status(statusCode).json({
