@@ -8,9 +8,12 @@ export const setCookieHeaderAndSendResponse = (
 ) => {
   res.cookie("jwt", token, {
     expires: new Date(Date.now() + +env.JWT_EXPIRES_IN * 24 * 60 * 60 * 1000),
-    httpOnly: env.NODE_ENV === "production",
-    secure: true,
-    sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
+    // httpOnly: env.NODE_ENV === "production",
+    // secure: true,
+    // sameSite: "lax",
+    httpOnly: true,
+    secure: false, // allow HTTP for dev frontend
+    sameSite: "lax",
   });
 
   res.status(statusCode).json({

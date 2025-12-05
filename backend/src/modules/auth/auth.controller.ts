@@ -54,9 +54,12 @@ export default class AuthController {
 
   static async logout(_req: Request, res: Response): Promise<void> {
     res.clearCookie("jwt", {
+      // httpOnly: true,
+      // secure: env.NODE_ENV === "production",
+      // sameSite: "lax",
       httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
+      secure: false, // allow HTTP for dev frontend
+      sameSite: "lax",
     });
 
     res.status(200).json({
