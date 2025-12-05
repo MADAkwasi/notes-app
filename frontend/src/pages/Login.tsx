@@ -11,7 +11,7 @@ import { FiLoader } from "react-icons/fi";
 import { useAuth } from "../utils/hooks/useAuth";
 
 export default function LoginPage(): ReactElement {
-  const { login, error, isLoading } = useAuth();
+  const { login, isLoading } = useAuth();
   const {
     handleSubmit,
     register,

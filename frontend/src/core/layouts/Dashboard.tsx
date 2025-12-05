@@ -18,11 +18,8 @@ import type { Note } from "../../utils/interfaces/note.interface";
 export default function DashboardLayout(): ReactElement {
   const [userNotes, setUserNotes] = useState<Note[] | null>(null);
   const { user, logout, refreshUser, isFetchingUser } = useAuth();
-  const {
-    execute: getNotes,
-    isLoading: isFetchingNotes,
-    error,
-  } = useRequest(getUserNotesRequest);
+  const { execute: getNotes, isLoading: isFetchingNotes } =
+    useRequest(getUserNotesRequest);
 
   const handleLogout = async () => {
     await logout();
