@@ -15,7 +15,7 @@ export default function NavigationOption({
       <span className="semi-bold flex items-center justify-between">
         <h4>{group.title}</h4>
 
-        {group.title === "Recent" && (
+        {group.title === "Recent" && group.routes.length > 2 && (
           <AppButton
             variant="tertiary"
             className="text-xs w-fit! text-gray-400"
@@ -26,7 +26,7 @@ export default function NavigationOption({
       </span>
 
       <ul className="flex flex-col">
-        {group.routes.map(({ id, path, label, icon: Icon }) => (
+        {group.routes.slice(0, 2).map(({ id, path, label, icon: Icon }) => (
           <NavLink
             to={path}
             key={id}

@@ -18,9 +18,14 @@ export interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isFetchingUser: boolean;
-  error: unknown;
+  error: string | null;
   login: (data: LoginData) => Promise<void>;
   signup: (data: SignupData) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
+}
+
+export interface ErrorResponse {
+  status: string;
+  message: string;
 }

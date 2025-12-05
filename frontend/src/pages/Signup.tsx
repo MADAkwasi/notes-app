@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import type { SignupData } from "../utils/interfaces/auth.interface";
 import InputField from "../components/InputField";
 import { signupFormFields } from "../utils/constants/form";
-import { type ReactElement } from "react";
+import { useEffect, type ReactElement } from "react";
 import { signupSchema } from "../utils/schemas/authForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AppButton from "../components/Button";
 import { FiLoader } from "react-icons/fi";
 import { useAuth } from "../utils/hooks/useAuth";
+import { toast } from "react-toastify";
 
 export default function SignupPage(): ReactElement {
-  const { isLoading, signup } = useAuth();
+  const { isLoading, signup, error } = useAuth();
   const {
     handleSubmit,
     register,
@@ -23,6 +24,12 @@ export default function SignupPage(): ReactElement {
   const onSubmit: SubmitHandler<SignupData> = async (data) => {
     await signup(data);
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   return (
     <main className="w-screen h-screen flex justify-center items-center overflow-auto px-4 py-10">

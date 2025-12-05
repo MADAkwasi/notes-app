@@ -9,6 +9,7 @@ import {
 } from "../api/auth.service";
 import type {
   AuthContextType,
+  ErrorResponse,
   LoginData,
   SignupData,
 } from "../../utils/interfaces/auth.interface";
@@ -18,15 +19,48 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+interface AxiosErrorShape {
+  response: {
+    data: ErrorResponse;
+  };
+}
+
+function isAxiosErrorShape(err: unknown): err is AxiosErrorShape {
+  if (typeof err === "object" && err !== null && "response" in err) {
+    const res = (err as Record<string, unknown>).response;
+
+    if (
+      typeof res === "object" &&
+      res !== null &&
+      "data" in res &&
+      typeof (res as Record<string, unknown>).data === "object"
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingUser, setIsFetchingUser] = useState(false);
-  const [error, setError] = useState<unknown>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const getErrorMessage = (err: unknown): string => {
+    if (isAxiosErrorShape(err)) {
+      return err.response.data.message;
+    }
+
+    if (err instanceof Error) return err.message;
+
+    return "Unexpected error occurred";
+  };
 
   const refreshUser = useCallback(async () => {
     try {
+      setError(null);
       setIsFetchingUser(true);
       const user = await getLoggedInUser();
       if (!user) {
@@ -37,7 +71,9 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
       setUser(user);
     } catch (err: unknown) {
       setUser(null);
-      setError(err);
+
+      setError(getErrorMessage(err));
+
       navigate("/login");
     } finally {
       setIsFetchingUser(false);
@@ -46,13 +82,14 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
 
   const login = useCallback(
     async (data: LoginData) => {
+      setError(null);
       try {
         setIsLoading(true);
         await loginRequest(data);
         await refreshUser();
         navigate("/");
       } catch (err: unknown) {
-        setError(err);
+        setError(getErrorMessage(err));
       } finally {
         setIsLoading(false);
       }
@@ -62,13 +99,14 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
 
   const signup = useCallback(
     async (data: SignupData) => {
+      setError(null);
       try {
         setIsLoading(true);
         await signupRequest(data);
         await refreshUser();
         navigate("/");
       } catch (err) {
-        setError(err);
+        setError(getErrorMessage(err));
       } finally {
         setIsLoading(false);
       }

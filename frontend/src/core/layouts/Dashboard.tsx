@@ -14,12 +14,22 @@ import { useAuth } from "../../utils/hooks/useAuth";
 import { useRequest } from "../../utils/hooks/useRequest";
 import { getUserNotesRequest } from "../api/note.service";
 import type { Note } from "../../utils/interfaces/note.interface";
+import { toast } from "react-toastify";
 
 export default function DashboardLayout(): ReactElement {
   const [userNotes, setUserNotes] = useState<Note[] | null>(null);
-  const { user, logout, refreshUser, isFetchingUser } = useAuth();
-  const { execute: getNotes, isLoading: isFetchingNotes } =
-    useRequest(getUserNotesRequest);
+  const {
+    user,
+    logout,
+    refreshUser,
+    isFetchingUser,
+    isLoading: isLoggingOut,
+  } = useAuth();
+  const {
+    execute: getNotes,
+    isLoading: isFetchingNotes,
+    error,
+  } = useRequest(getUserNotesRequest);
 
   const handleLogout = async () => {
     await logout();
@@ -27,22 +37,20 @@ export default function DashboardLayout(): ReactElement {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      try {
-        const notes = await getNotes();
-        setUserNotes(notes);
-      } catch (err) {
-        console.error(err);
-      }
+      const notes = await getNotes();
+      setUserNotes(notes);
+
+      if (error) toast.error(error);
     };
 
     if (!userNotes) {
       void fetchNotes();
     }
-  }, [getNotes, userNotes]);
+  }, [getNotes, userNotes, error]);
 
   useEffect(() => {
-    if (!user) void refreshUser();
-  }, [refreshUser, user]);
+    if (!user && isLoggingOut) void refreshUser();
+  }, [refreshUser, user, isLoggingOut]);
 
   return (
     <>
@@ -73,9 +81,7 @@ export default function DashboardLayout(): ReactElement {
 
             <div className="my-3 flex flex-col gap-4">
               {userNotes && (
-                <NavigationOption
-                  group={recentNavigationGroup(userNotes.slice(0, 2))}
-                />
+                <NavigationOption group={recentNavigationGroup(userNotes)} />
               )}
               <NavigationOption group={additionalNavigation} />
             </div>

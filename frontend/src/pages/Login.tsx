@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import type { LoginData } from "../utils/interfaces/auth.interface";
 import InputField from "../components/InputField";
 import { loginFormFields } from "../utils/constants/form";
-import { type ReactElement } from "react";
+import { useEffect, type ReactElement } from "react";
 import { loginSchema } from "../utils/schemas/authForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AppButton from "../components/Button";
 import { FiLoader } from "react-icons/fi";
 import { useAuth } from "../utils/hooks/useAuth";
+import { toast } from "react-toastify";
 
 export default function LoginPage(): ReactElement {
-  const { login, isLoading } = useAuth();
+  const { login, isLoading, error } = useAuth();
   const {
     handleSubmit,
     register,
@@ -23,6 +24,12 @@ export default function LoginPage(): ReactElement {
   const onSubmit: SubmitHandler<LoginData> = async (data) => {
     await login(data);
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   return (
     <main className="w-screen h-screen flex justify-center items-center overflow-auto px-4 py-10">
