@@ -57,9 +57,8 @@ export default class AuthController {
       // httpOnly: true,
       // secure: env.NODE_ENV === "production",
       // sameSite: "lax",
-      httpOnly: true,
-      secure: false, // allow HTTP for dev frontend
-      sameSite: "lax",
+      sameSite: "none",
+      secure: false,
     });
 
     res.status(200).json({

@@ -12,8 +12,8 @@ export const setCookieHeaderAndSendResponse = (
     // secure: true,
     // sameSite: "lax",
     httpOnly: true,
-    secure: false, // allow HTTP for dev frontend
-    sameSite: "lax",
+    sameSite: "none",
+    secure: false,
   });
 
   res.status(statusCode).json({
