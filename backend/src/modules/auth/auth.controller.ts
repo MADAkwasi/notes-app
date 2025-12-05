@@ -4,6 +4,7 @@ import { setCookieHeaderAndSendResponse } from "../../utils/cookies";
 import AppError from "../../utils/appError";
 import { Types } from "mongoose";
 import User from "../user/user.model";
+import { env } from "../../config/env";
 
 export default class AuthController {
   static async signup(req: Request, res: Response): Promise<void> {
@@ -51,11 +52,11 @@ export default class AuthController {
     });
   }
 
-  static async logout(_: Request, res: Response): Promise<void> {
+  static async logout(_req: Request, res: Response): Promise<void> {
     res.clearCookie("jwt", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: env.NODE_ENV === "production",
+      sameSite: env.NODE_ENV === "production" ? "strict" : "lax",
     });
 
     res.status(200).json({
