@@ -6,6 +6,7 @@ export interface INote {
   tags: string[];
   user: Types.ObjectId;
   deletedAt: Date | null;
+  createdAt: Date;
 }
 
 export type INoteUpdate = Partial<Pick<INote, "title" | "content" | "tags">>;

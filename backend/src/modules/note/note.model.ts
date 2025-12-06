@@ -21,6 +21,10 @@ const noteSchema = new Schema<INoteDocument>({
     type: Date,
     default: null,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 noteSchema.pre<Query<INoteDocument, INoteDocument>>(/^find/, function () {
