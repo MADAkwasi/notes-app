@@ -15,6 +15,7 @@ import { useRequest } from "../../utils/hooks/useRequest";
 import { getUserNotesRequest } from "../api/note.service";
 import type { Note } from "../../utils/interfaces/note.interface";
 import { toast } from "react-toastify";
+import NoteList from "../../components/NoteList";
 
 export default function DashboardLayout(): ReactElement {
   const [userNotes, setUserNotes] = useState<Note[] | null>(null);
@@ -51,9 +52,9 @@ export default function DashboardLayout(): ReactElement {
       {isFetchingUser || isFetchingNotes ? (
         <DashboardSkeleton />
       ) : (
-        <main className="flex w-screen h-screen">
-          <section className="w-1/4 py-6 px-4 flex flex-col gap-4">
-            <header className="flex flex-col gap-6">
+        <main className="flex h-screen">
+          <section className="w-1/4 pt-6 px-4 flex flex-col gap-4">
+            <header className="flex flex-col gap-4">
               <div className="flex items-center justify-between ">
                 <Link to="/">
                   <img src="logo.svg" alt="logo" />
@@ -95,7 +96,11 @@ export default function DashboardLayout(): ReactElement {
               </span>
             </div>
           </section>
-          <section className="w-3/4 bg-[#1c1c1c]">
+          <section className="w-1/4 bg-[#1c1c1c]">
+            <NoteList isFavorite={false} />
+          </section>
+
+          <section className="w-2/4 ">
             <Outlet />
           </section>
         </main>

@@ -1,10 +1,12 @@
 import { type ReactElement, useEffect, useState } from "react";
 import { FaCalendarDays, FaHashtag } from "react-icons/fa6";
+import { BsThreeDots } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useRequest } from "../utils/hooks/useRequest";
 import { getNoteRequest } from "../core/api/note.service";
 import type { Note } from "../utils/interfaces/note.interface";
+import AppButton from "../components/Button";
 
 export default function NotePage(): ReactElement {
   const [userNote, setUserNote] = useState<Note | null>(null);
@@ -26,8 +28,17 @@ export default function NotePage(): ReactElement {
   return (
     <>
       {userNote && !isLoading && (
-        <section className="py-6 px-4 text-white h-full w-full overflow-hidden">
-          <h2 className="text-2xl font-bold">{userNote.title}</h2>
+        <div className="py-6 px-4 text-white h-full w-full overflow-hidden">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold">{userNote.title}</h2>
+            <AppButton
+              variant="tertiary"
+              title="View More"
+              className="w-fit! p-0!"
+            >
+              <BsThreeDots className="text-white" />
+            </AppButton>
+          </div>
 
           <div className="border-b px-3 py-2 border-b-white flex items-center gap-10 my-5">
             <span className="flex items-center gap-4 ">
@@ -54,7 +65,7 @@ export default function NotePage(): ReactElement {
           <textarea className="whitespace-pre-line  w-full h-[calc(100%-200px)] bg-transparent outline-none resize-none">
             {userNote.content}
           </textarea>
-        </section>
+        </div>
       )}
     </>
   );
