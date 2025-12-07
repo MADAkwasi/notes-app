@@ -45,7 +45,9 @@ export default function NotePage(): ReactElement {
               <FaCalendarDays />
               <h4>Date</h4>
             </span>
-            <h4>{new Date(userNote.createdAt).toDateString()}</h4>
+            {new Intl.DateTimeFormat("en-GB").format(
+              new Date(userNote.createdAt)
+            )}
           </div>
 
           <div className="border-b px-3 py-2 border-b-white flex items-center gap-10 my-5">

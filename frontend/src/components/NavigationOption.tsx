@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import AppButton from "./Button";
 import type { NavigationGroup } from "../utils/interfaces/navigation.interface";
 import { NavLink } from "react-router-dom";
+import { useUIInteractions } from "../utils/hooks/useInteraction";
 
 interface OptionProps {
   group: NavigationGroup;
@@ -10,6 +11,13 @@ interface OptionProps {
 export default function NavigationOption({
   group,
 }: Readonly<OptionProps>): ReactElement {
+  const { showNoteList, setIsRecentTab } = useUIInteractions();
+
+  const handleShowList = () => {
+    showNoteList();
+    setIsRecentTab(true);
+  };
+
   return (
     <div className="text-gray-400 flex flex-col gap-1">
       <span className="semi-bold flex items-center justify-between">
@@ -19,6 +27,7 @@ export default function NavigationOption({
           <AppButton
             variant="tertiary"
             className="text-xs w-fit! text-gray-400"
+            onClick={handleShowList}
           >
             View All
           </AppButton>

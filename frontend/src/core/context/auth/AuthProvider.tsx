@@ -1,18 +1,18 @@
 import { useState, useMemo, useCallback, type ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
-import type { User } from "../../utils/interfaces/user.interface";
+import type { User } from "../../../utils/interfaces/user.interface";
 import {
   getLoggedInUser,
   loginRequest,
   logoutRequest,
   signupRequest,
-} from "../api/auth.service";
+} from "../../api/auth.service";
 import type {
   AuthContextType,
   ErrorResponse,
   LoginData,
   SignupData,
-} from "../../utils/interfaces/auth.interface";
+} from "../../../utils/interfaces/auth.interface";
 import { useNavigate } from "react-router-dom";
 
 interface AuthProviderProps {

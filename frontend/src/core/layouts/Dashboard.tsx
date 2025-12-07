@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from "react";
+import { Activity, useEffect, useState, type ReactElement } from "react";
 import { FaSearch } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
@@ -16,9 +16,11 @@ import { getUserNotesRequest } from "../api/note.service";
 import type { Note } from "../../utils/interfaces/note.interface";
 import { toast } from "react-toastify";
 import NoteList from "../../components/NoteList";
+import { useUIInteractions } from "../../utils/hooks/useInteraction";
 
 export default function DashboardLayout(): ReactElement {
   const [userNotes, setUserNotes] = useState<Note[] | null>(null);
+  const { isNotesListOpen } = useUIInteractions();
   const { user, logout, refreshUser, isFetchingUser } = useAuth();
   const {
     execute: getNotes,
@@ -96,11 +98,17 @@ export default function DashboardLayout(): ReactElement {
               </span>
             </div>
           </section>
-          <section className="w-1/4 bg-[#1c1c1c]">
-            <NoteList isFavorite={false} />
-          </section>
+          <Activity mode={isNotesListOpen ? "visible" : "hidden"}>
+            <section className="w-1/4 bg-[#1c1c1c] transition-all duration-200">
+              <NoteList isFavorite={false} notes={userNotes ?? []} />
+            </section>
+          </Activity>
 
-          <section className="w-2/4 ">
+          <section
+            className={`transition-all duration-200 ${
+              isNotesListOpen ? "w-2/4 " : "w-3/4"
+            }`}
+          >
             <Outlet />
           </section>
         </main>
