@@ -130,4 +130,20 @@ export default class NoteController {
       },
     });
   }
+
+  static async getDeletedNotes(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    const { userId } = req;
+    const notes = await noteService.getDeletedNotes(userId!);
+
+    res.status(200).json({
+      status: "success",
+      results: notes.length,
+      data: {
+        notes,
+      },
+    });
+  } 
 }

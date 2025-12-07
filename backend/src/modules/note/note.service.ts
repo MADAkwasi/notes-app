@@ -71,6 +71,16 @@ export class NoteService {
 
     return notes;
   }
+
+  public async getDeletedNotes(user: Types.ObjectId): Promise<INoteDocument[]> {
+    const notes = await Note.find({ user, includeDeleted: true })
+      .where({
+        deletedAt: { $ne: null },
+      })
+      .select("-__v");
+
+    return notes;
+  }
 }
 
 export const noteService = new NoteService();

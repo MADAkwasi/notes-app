@@ -14,6 +14,8 @@ router.use(protect);
 
 router.route("/my-notes").get(NoteController.getUserNotes);
 
+router.route("/my-notes/deleted").get(NoteController.getDeletedNotes);
+
 router
   .route("/")
   .get(NoteController.getNotes)
@@ -22,7 +24,7 @@ router
 router
   .route("/:noteId")
   .get(NoteController.getNote)
-  
+
   .patch(validate(updateNoteSchema), NoteController.updateNote)
   .delete(validate(noteParamSchema), NoteController.deleteNote);
 

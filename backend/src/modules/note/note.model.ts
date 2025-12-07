@@ -28,7 +28,11 @@ const noteSchema = new Schema<INoteDocument>({
 });
 
 noteSchema.pre<Query<INoteDocument, INoteDocument>>(/^find/, function () {
-  this.where({ deletedAt: null });
+  if (!this.getQuery().includeDeleted) {
+    this.where({ deletedAt: null });
+  }
+
+  delete this.getQuery().includeDeleted;
 });
 
 export const Note = model("Note", noteSchema);
