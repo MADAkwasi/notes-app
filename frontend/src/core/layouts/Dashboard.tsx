@@ -18,13 +18,7 @@ import { toast } from "react-toastify";
 
 export default function DashboardLayout(): ReactElement {
   const [userNotes, setUserNotes] = useState<Note[] | null>(null);
-  const {
-    user,
-    logout,
-    refreshUser,
-    isFetchingUser,
-    isLoading: isLoggingOut,
-  } = useAuth();
+  const { user, logout, refreshUser, isFetchingUser } = useAuth();
   const {
     execute: getNotes,
     isLoading: isFetchingNotes,
@@ -49,8 +43,8 @@ export default function DashboardLayout(): ReactElement {
   }, [getNotes, userNotes, error]);
 
   useEffect(() => {
-    if (!user && isLoggingOut) void refreshUser();
-  }, [refreshUser, user, isLoggingOut]);
+    if (!user) void refreshUser();
+  }, [refreshUser, user]);
 
   return (
     <>

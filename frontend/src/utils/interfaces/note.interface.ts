@@ -1,7 +1,15 @@
+export interface NotesResponse {
+  status: string;
+  results: number;
+  data: {
+    notes: Note[];
+  };
+}
+
 export interface NoteResponse {
   status: string;
   data: {
-    notes: Note[];
+    note: Note;
   };
 }
 
@@ -12,4 +20,5 @@ export interface Note {
   tags: string[];
   user: string;
   deletedAt?: Date;
+  createdAt: Date;
 }

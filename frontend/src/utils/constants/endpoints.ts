@@ -6,6 +6,7 @@ export const endpoints = {
     me: "/auth/me",
   },
   notes: {
-    getUserNotes: 'notes/my-notes'
-  }
+    getUserNotes: "/notes/my-notes",
+    getNoteById: (id: string) => `/notes/${id}`,
+  },
 };
