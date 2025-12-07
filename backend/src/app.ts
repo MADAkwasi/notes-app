@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://nowtedd.netlify.app",
     credentials: true,
   })
 );
