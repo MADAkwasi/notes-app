@@ -17,6 +17,7 @@ import type { Note } from "../../utils/interfaces/note.interface";
 import { toast } from "react-toastify";
 import NoteList from "../../components/NoteList";
 import { useUIInteractions } from "../../utils/hooks/useInteraction";
+import NoteForm from "../../components/NoteForm";
 
 export default function DashboardLayout(): ReactElement {
   const [userNotes, setUserNotes] = useState<Note[] | null>(null);
@@ -54,7 +55,7 @@ export default function DashboardLayout(): ReactElement {
       {isFetchingUser || isFetchingNotes ? (
         <DashboardSkeleton />
       ) : (
-        <main className="flex h-screen">
+        <main className="flex h-screen relative">
           <section className="w-1/4 pt-6 px-4 flex flex-col gap-4">
             <header className="flex flex-col gap-4">
               <div className="flex items-center justify-between ">
@@ -111,6 +112,8 @@ export default function DashboardLayout(): ReactElement {
           >
             <Outlet />
           </section>
+
+          <NoteForm />
         </main>
       )}
     </>

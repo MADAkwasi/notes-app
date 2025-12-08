@@ -23,3 +23,10 @@ export async function getNoteRequest(id: string): Promise<Note> {
 
   return res.data.note;
 }
+
+export async function getDeletedNotesRequest(): Promise<Note[]> {
+  const { data: res } = await api.get<NotesResponse>(
+    notesEndpoints.getDeletedNotes
+  );
+  return res.data.notes;
+}

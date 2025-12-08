@@ -58,15 +58,16 @@ export default function NotePage(): ReactElement {
 
             <input
               type="text"
-              value={userNote.tags.join(", ")}
+              defaultValue={userNote.tags.join(", ")}
               readOnly
               className="bg-transparent outline-none w-full"
             />
           </div>
 
-          <textarea className="whitespace-pre-line  w-full h-[calc(100%-200px)] bg-transparent outline-none resize-none">
-            {userNote.content}
-          </textarea>
+          <textarea
+            className="whitespace-pre-line  w-full h-[calc(100%-200px)] bg-transparent outline-none resize-none"
+            defaultValue={userNote.content}
+          />
         </div>
       )}
     </>

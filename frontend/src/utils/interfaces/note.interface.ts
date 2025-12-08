@@ -22,3 +22,10 @@ export interface Note {
   deletedAt?: Date;
   createdAt: Date;
 }
+
+export interface CreateNoteDTO {
+  [key: string]: unknown;
+  title: string;
+  content: string;
+  tags?: string;
+}

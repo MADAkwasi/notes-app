@@ -1,5 +1,6 @@
 import type { LoginData, SignupData } from "../interfaces/auth.interface";
 import type { FormField } from "../interfaces/form.interface";
+import type { CreateNoteDTO } from "../interfaces/note.interface";
 
 export const signupFormFields: FormField<SignupData>[] = [
   {
@@ -34,5 +35,23 @@ export const loginFormFields: FormField<LoginData>[] = [
     id: 2,
     placeholder: "Password",
     fieldName: "password",
+  },
+];
+
+export const addNoteFormFields: FormField<CreateNoteDTO>[] = [
+  {
+    id: 1,
+    placeholder: "Title",
+    fieldName: "title",
+  },
+  {
+    id: 2,
+    placeholder: "Content",
+    fieldName: "content",
+  },
+  {
+    id: 3,
+    placeholder: "Tags",
+    fieldName: "tags",
   },
 ];
