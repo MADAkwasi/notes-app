@@ -101,7 +101,7 @@ export default function DashboardLayout(): ReactElement {
           </section>
           <Activity mode={isNotesListOpen ? "visible" : "hidden"}>
             <section className="w-1/4 bg-[#1c1c1c] transition-all duration-200">
-              <NoteList isFavorite={false} notes={userNotes ?? []} />
+              <NoteList notes={userNotes ?? []} />
             </section>
           </Activity>
 
