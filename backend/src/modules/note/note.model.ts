@@ -44,4 +44,4 @@ noteSchema.pre<Query<INoteDocument, INoteDocument & NoteQuery>>(
   }
 );
 
-export const Note = model("Note", noteSchema);
+export const Note = model<INoteDocument>("Note", noteSchema);
