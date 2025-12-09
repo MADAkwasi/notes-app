@@ -9,6 +9,10 @@ export interface INote {
   createdAt: Date;
 }
 
+export interface NoteQuery {
+  includeDeleted?: boolean;
+}
+
 export type INoteUpdate = Partial<Pick<INote, "title" | "content" | "tags">>;
 
 export interface INoteDocument extends INote, Document {}

@@ -1,5 +1,5 @@
 import { model, Schema, Query } from "mongoose";
-import { INoteDocument } from "../../types/note.type";
+import { INoteDocument, NoteQuery } from "../../types/note.type";
 
 const noteSchema = new Schema<INoteDocument>({
   title: {
@@ -27,12 +27,17 @@ const noteSchema = new Schema<INoteDocument>({
   },
 });
 
-noteSchema.pre<Query<INoteDocument, INoteDocument>>(/^find/, function () {
-  if (!this.getQuery().includeDeleted) {
-    this.where({ deletedAt: null });
-  }
+noteSchema.pre<Query<INoteDocument, INoteDocument & NoteQuery>>(
+  /^find/,
+  function () {
+    const q = this.getQuery() as NoteQuery;
 
-  delete this.getQuery().includeDeleted;
-});
+    if (!q.includeDeleted) {
+      this.where({ deletedAt: null });
+    }
+
+    delete q.includeDeleted;
+  }
+);
 
 export const Note = model("Note", noteSchema);
