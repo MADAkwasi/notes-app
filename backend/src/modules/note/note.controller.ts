@@ -100,11 +100,10 @@ export default class NoteController {
     const {
       userId,
       params: { noteId },
-      body: { title, content, tags },
+      body: { content, tags },
     } = req;
 
     const note = await noteService.updateNote(userId!, noteId, {
-      title,
       content,
       tags,
     });
@@ -131,10 +130,7 @@ export default class NoteController {
     });
   }
 
-  static async getDeletedNotes(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  static async getDeletedNotes(req: Request, res: Response): Promise<void> {
     const { userId } = req;
     const notes = await noteService.getDeletedNotes(userId!);
 
@@ -145,5 +141,5 @@ export default class NoteController {
         notes,
       },
     });
-  } 
+  }
 }

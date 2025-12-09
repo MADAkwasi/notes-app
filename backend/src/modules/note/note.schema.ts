@@ -16,7 +16,6 @@ export const noteParamSchema = z.object({
 
 export const updateNoteSchema = z.object({
   body: z.object({
-    title: z.string().min(3),
     content: z.string().min(5),
     tags: z.array(z.string()),
   }),
