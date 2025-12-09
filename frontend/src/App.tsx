@@ -5,6 +5,7 @@ import SignupPage from "./pages/Signup";
 import RecycleBinPage from "./pages/RecycleBin";
 import DashboardLayout from "./core/layouts/Dashboard";
 import NotePage from "./pages/Note";
+import FavoritesPage from "./pages/Favorites";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Route path="/" element={<DashboardLayout />}>
         <Route index element={<HomePage />} />
         <Route path="/notes/:id" element={<NotePage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/recycle-bin" element={<RecycleBinPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
