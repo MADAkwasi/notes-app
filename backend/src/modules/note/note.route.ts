@@ -33,4 +33,10 @@ router.patch(
   NoteController.restoreNote
 );
 
+router.patch(
+  "/:noteId/favorite",
+  validate(noteParamSchema),
+  NoteController.handleFavorite
+);
+
 export default router;

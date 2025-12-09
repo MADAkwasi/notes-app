@@ -21,6 +21,10 @@ const noteSchema = new Schema<INoteDocument>({
     type: Date,
     default: null,
   },
+  isFavorite: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now(),

@@ -35,7 +35,7 @@ export class NoteService {
   ): Promise<boolean> {
     const result = await Note.updateOne(
       { user, _id: noteId },
-      { deletedAt: new Date() }
+      { deletedAt: new Date(), isFavorite: false }
     );
 
     return result.modifiedCount > 0;
@@ -49,6 +49,17 @@ export class NoteService {
       { user, _id: noteId },
       { deletedAt: null }
     );
+
+    return result.modifiedCount > 0;
+  }
+
+  public async toggleFavorite(
+    user: Types.ObjectId,
+    noteId: string
+  ): Promise<boolean> {
+    const result = await Note.updateOne({ user, _id: noteId }, [
+      { $set: { isFavorite: { $not: "$isFavorite" } } },
+    ]);
 
     return result.modifiedCount > 0;
   }

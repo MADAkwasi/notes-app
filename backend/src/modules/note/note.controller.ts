@@ -92,6 +92,26 @@ export default class NoteController {
     });
   }
 
+  static async handleFavorite(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const {
+      userId,
+      params: { noteId },
+    } = req;
+
+    const isToggled = await noteService.toggleFavorite(userId!, noteId);
+
+    if (!isToggled) return next(new AppError("Note not found", 404));
+
+    res.status(200).json({
+      status: "success",
+      message: "Note favorite status toggled successfully",
+    });
+  }
+
   static async updateNote(
     req: Request,
     res: Response,
