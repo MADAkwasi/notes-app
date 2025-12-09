@@ -41,3 +41,8 @@ export interface EditNoteDTO {
   tags?: string[];
   content?: string;
 }
+
+export interface NoteDeletedResponse {
+  status: string;
+  message: string;
+}

@@ -3,6 +3,7 @@ import type {
   CreateNoteDTO,
   EditNoteDTO,
   Note,
+  NoteDeletedResponse,
   NoteResponse,
   NotesResponse,
 } from "../../utils/interfaces/note.interface";
@@ -49,4 +50,24 @@ export async function editNoteRequest(
   );
 
   return res.data.note;
+}
+
+export async function deleteNoteRequest(
+  id: string
+): Promise<NoteDeletedResponse> {
+  const { data: res } = await api.delete<NoteDeletedResponse>(
+    notesEndpoints.handleNote(id)
+  );
+
+  return res;
+}
+
+export async function restoreNoteRequest(
+  id: string
+): Promise<NoteDeletedResponse> {
+  const { data: res } = await api.patch<NoteDeletedResponse>(
+    notesEndpoints.restoreNote(id)
+  );
+
+  return res;
 }

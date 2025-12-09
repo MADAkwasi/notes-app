@@ -1,8 +1,9 @@
-import type { ReactElement } from "react";
+import { Activity, type ReactElement } from "react";
 import AppButton from "./Button";
 import type { NavigationGroup } from "../utils/interfaces/navigation.interface";
 import { NavLink } from "react-router-dom";
 import { useUIInteractions } from "../utils/hooks/useInteraction";
+import { ImFilesEmpty } from "react-icons/im";
 
 interface OptionProps {
   group: NavigationGroup;
@@ -23,7 +24,13 @@ export default function NavigationOption({
       <span className="semi-bold flex items-center justify-between">
         <h4>{group.title}</h4>
 
-        {group.title === "Recent" && group.routes.length > 2 && (
+        <Activity
+          mode={
+            group.title === "Recent" && group.routes.length > 2
+              ? "visible"
+              : "hidden"
+          }
+        >
           <AppButton
             variant="tertiary"
             className="text-xs w-fit! text-gray-400"
@@ -31,7 +38,7 @@ export default function NavigationOption({
           >
             View All
           </AppButton>
-        )}
+        </Activity>
       </span>
 
       <ul className="flex flex-col">
@@ -55,6 +62,18 @@ export default function NavigationOption({
           </NavLink>
         ))}
       </ul>
+
+      <Activity
+        mode={
+          group.title === "Recent" && group.routes.length === 0
+            ? "visible"
+            : "hidden"
+        }
+      >
+        <span className="flex items-center gap-2 p-2 text-sm">
+          <ImFilesEmpty /> <p>Notes Records Empty</p>
+        </span>
+      </Activity>
     </div>
   );
 }
