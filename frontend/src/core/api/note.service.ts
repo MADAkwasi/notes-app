@@ -1,6 +1,7 @@
 import { endpoints } from "../../utils/constants/endpoints";
 import type {
   CreateNoteDTO,
+  EditNoteDTO,
   Note,
   NoteResponse,
   NotesResponse,
@@ -19,7 +20,7 @@ export async function getUserNotesRequest(): Promise<Note[]> {
 
 export async function getNoteRequest(id: string): Promise<Note> {
   const { data: res } = await api.get<NoteResponse>(
-    notesEndpoints.getNoteById(id)
+    notesEndpoints.handleNote(id)
   );
 
   return res.data.note;
@@ -36,4 +37,16 @@ export async function postNoteRequest(data: CreateNoteDTO) {
   const res = await api.post<CreateNoteDTO>(notesEndpoints.postNote, data);
 
   return res;
+}
+
+export async function editNoteRequest(
+  data: EditNoteDTO,
+  id: string
+): Promise<Note> {
+  const { data: res } = await api.patch<NoteResponse>(
+    notesEndpoints.handleNote(id),
+    data
+  );
+
+  return res.data.note;
 }

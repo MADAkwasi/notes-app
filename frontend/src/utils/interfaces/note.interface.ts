@@ -36,3 +36,8 @@ export interface CreateNoteFormInput {
   content: string;
   tags?: string;
 }
+
+export interface EditNoteDTO {
+  tags?: string[];
+  content?: string;
+}

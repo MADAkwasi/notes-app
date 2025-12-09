@@ -7,7 +7,7 @@ export const endpoints = {
   },
   notes: {
     getUserNotes: "/notes/my-notes",
-    getNoteById: (id: string) => `/notes/${id}`,
+    handleNote: (id: string) => `/notes/${id}`,
     getDeletedNotes: "/notes/my-notes/deleted",
     postNote: "/notes",
   },
