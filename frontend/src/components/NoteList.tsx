@@ -30,7 +30,7 @@ export default function NoteList({ notes }: Readonly<ListProps>): ReactElement {
       <div className="flex flex-col gap-3 mt-7">
         {notes.map((note) => (
           <Link to={`/notes/${note._id}`} key={note._id}>
-            <NoteItem isFavorite={false} note={note} />
+            <NoteItem note={note} />
           </Link>
         ))}
       </div>

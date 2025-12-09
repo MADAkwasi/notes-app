@@ -17,6 +17,7 @@ export interface Note {
   _id: string;
   title: string;
   content: string;
+  isFavorite: boolean;
   tags: string[];
   user: string;
   deletedAt?: Date;

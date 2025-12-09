@@ -4,13 +4,11 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 import type { Note } from "../utils/interfaces/note.interface";
 
 interface ItemProps {
-  isFavorite?: boolean;
   isDeleted?: boolean;
   note: Note;
 }
 
 export default function NoteItem({
-  isFavorite,
   note,
   isDeleted = false,
 }: ItemProps): ReactElement {
@@ -28,10 +26,12 @@ export default function NoteItem({
         <Activity mode={!isDeleted ? "visible" : "hidden"}>
           <AppButton
             variant="tertiary"
-            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+            title={
+              note.isFavorite ? "Remove from favorites" : "Add to favorites"
+            }
             className="w-fit! p-0!"
           >
-            {isFavorite ? (
+            {note.isFavorite ? (
               <FaStar className="text-white" />
             ) : (
               <FaRegStar className="text-white" />
