@@ -4,4 +4,7 @@ export interface UIInteractionContextType {
   showNoteList: () => void;
   hideNoteList: () => void;
   setIsRecentTab: (value: boolean) => void;
+  closeNoteForm: () => void;
+  openNoteForm: () => void;
+  isNoteFormOpen: boolean;
 }

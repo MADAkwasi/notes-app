@@ -26,6 +26,13 @@ export interface Note {
 export interface CreateNoteDTO {
   [key: string]: unknown;
   title: string;
+  tags?: string[];
+  content: string;
+}
+
+export interface CreateNoteFormInput {
+  [key: string]: unknown;
+  title: string;
   content: string;
   tags?: string;
 }

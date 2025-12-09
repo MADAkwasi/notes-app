@@ -8,6 +8,7 @@ interface Props {
 export function UIInteractionProvider({ children }: Props) {
   const [isNotesListOpen, setIsNoteListOpen] = useState(false);
   const [isRecentTab, setIsRecentTab] = useState(false);
+  const [isNoteFormOpen, setIsNoteFormOpen] = useState(false);
 
   const showNoteList = useCallback(() => {
     setIsNoteListOpen(true);
@@ -17,6 +18,10 @@ export function UIInteractionProvider({ children }: Props) {
     setIsNoteListOpen(false);
   }, []);
 
+  const closeNoteForm = useCallback(() => setIsNoteFormOpen(false), []);
+
+  const openNoteForm = useCallback(() => setIsNoteFormOpen(true), []);
+
   const value = useMemo(
     () => ({
       isNotesListOpen,
@@ -24,8 +29,20 @@ export function UIInteractionProvider({ children }: Props) {
       showNoteList,
       hideNoteList,
       setIsRecentTab,
+      closeNoteForm,
+      openNoteForm,
+      isNoteFormOpen,
     }),
-    [isNotesListOpen, isRecentTab, hideNoteList, showNoteList, setIsRecentTab]
+    [
+      isNotesListOpen,
+      isRecentTab,
+      hideNoteList,
+      showNoteList,
+      setIsRecentTab,
+      closeNoteForm,
+      openNoteForm,
+      isNoteFormOpen,
+    ]
   );
 
   return (

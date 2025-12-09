@@ -7,4 +7,7 @@ export const UIInteractionContext = createContext<UIInteractionContextType>({
   showNoteList: () => {},
   hideNoteList: () => {},
   setIsRecentTab: () => {},
+  closeNoteForm: () => {},
+  openNoteForm: () => {},
+  isNoteFormOpen: false,
 });

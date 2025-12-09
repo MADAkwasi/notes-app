@@ -44,14 +44,15 @@ export const addNoteFormFields: FormField<CreateNoteDTO>[] = [
     placeholder: "Title",
     fieldName: "title",
   },
+
   {
     id: 2,
-    placeholder: "Content",
-    fieldName: "content",
+    placeholder: "Tags",
+    fieldName: "tags",
   },
   {
     id: 3,
-    placeholder: "Tags",
-    fieldName: "tags",
+    placeholder: "Content",
+    fieldName: "content",
   },
 ];

@@ -21,7 +21,7 @@ import NoteForm from "../../components/NoteForm";
 
 export default function DashboardLayout(): ReactElement {
   const [userNotes, setUserNotes] = useState<Note[] | null>(null);
-  const { isNotesListOpen } = useUIInteractions();
+  const { isNotesListOpen, isNoteFormOpen, openNoteForm } = useUIInteractions();
   const { user, logout, refreshUser, isFetchingUser } = useAuth();
   const {
     execute: getNotes,
@@ -72,7 +72,7 @@ export default function DashboardLayout(): ReactElement {
                 </AppButton>
               </div>
 
-              <AppButton title="Create a new note">
+              <AppButton title="Create a new note" onClick={openNoteForm}>
                 <IoMdAdd /> New Note
               </AppButton>
             </header>
@@ -113,7 +113,9 @@ export default function DashboardLayout(): ReactElement {
             <Outlet />
           </section>
 
-          <NoteForm />
+          <Activity mode={isNoteFormOpen ? "visible" : "hidden"}>
+            <NoteForm />
+          </Activity>
         </main>
       )}
     </>

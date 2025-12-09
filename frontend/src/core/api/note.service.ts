@@ -1,5 +1,6 @@
 import { endpoints } from "../../utils/constants/endpoints";
 import type {
+  CreateNoteDTO,
   Note,
   NoteResponse,
   NotesResponse,
@@ -29,4 +30,10 @@ export async function getDeletedNotesRequest(): Promise<Note[]> {
     notesEndpoints.getDeletedNotes
   );
   return res.data.notes;
+}
+
+export async function postNoteRequest(data: CreateNoteDTO) {
+  const res = await api.post<CreateNoteDTO>(notesEndpoints.postNote, data);
+
+  return res;
 }

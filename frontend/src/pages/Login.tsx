@@ -34,7 +34,7 @@ export default function LoginPage(): ReactElement {
   return (
     <main className="w-screen h-screen flex justify-center items-center overflow-auto px-4 py-10">
       <form
-        className="w-2/5 gap-4 flex flex-col"
+        className="w-[90%] md:w-3/4 lg:w-2/5 gap-4 flex flex-col"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-center text-2xl font-semibold my-4 text-white">
