@@ -51,7 +51,7 @@ export default function RecycleBinPage() {
 
       <Activity mode={deletedNotes.length > 0 ? "visible" : "hidden"}>
         <section
-          className={`text-white grid w-full h-full gap-3 p-6 bg-[#121212] ${
+          className={`text-white grid w-full h-full gap-3 p-6 bg-[#121212] overflow-y-auto ${
             isNotesListOpen ? "grid-cols-2" : "grid-cols-3"
           }`}
         >

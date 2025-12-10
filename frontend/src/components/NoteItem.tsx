@@ -20,7 +20,7 @@ export default function NoteItem({
           : "opacity-100 bg-[#1f1f1f] cursor-pointer hover:bg-[#181818]"
       }`}
     >
-      <span className="flex items-center justify-between">
+      <span className="flex items-center justify-between gap-2">
         <h4 className="text-lg text-white font-semibold">{note.title}</h4>
 
         <Activity mode={!isDeleted ? "visible" : "hidden"}>

@@ -11,5 +11,6 @@ export const endpoints = {
     restoreNote: (id: string) => `/notes/${id}/restore`,
     getDeletedNotes: "/notes/my-notes/deleted",
     postNote: "/notes",
+    getFavorites: "/notes/my-notes/favorites",
   },
 };

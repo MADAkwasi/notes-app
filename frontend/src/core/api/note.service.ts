@@ -19,6 +19,14 @@ export async function getUserNotesRequest(): Promise<Note[]> {
   return res.data.notes;
 }
 
+export async function getFavoriteNotesRequest(): Promise<Note[]> {
+  const { data: res } = await api.get<NotesResponse>(
+    notesEndpoints.getFavorites
+  );
+
+  return res.data.notes;
+}
+
 export async function getNoteRequest(id: string): Promise<Note> {
   const { data: res } = await api.get<NoteResponse>(
     notesEndpoints.handleNote(id)
