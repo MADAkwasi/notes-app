@@ -30,6 +30,20 @@ export default class NoteController {
     });
   }
 
+  static async getFavorites(req: Request, res: Response): Promise<void> {
+    const { userId } = req;
+
+    const notes = await noteService.getFavoriteNotes(userId!);
+
+    res.status(201).json({
+      status: "success",
+      results: notes.length,
+      data: {
+        notes,
+      },
+    });
+  }
+
   static async getNote(
     req: Request,
     res: Response,

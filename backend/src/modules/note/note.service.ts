@@ -64,6 +64,16 @@ export class NoteService {
     return result.modifiedCount > 0;
   }
 
+  public async getFavoriteNotes(
+    user: Types.ObjectId
+  ): Promise<INoteDocument[]> {
+    const notes = await Note.find({ user, isFavorite: true }).select(
+      "-__v -deletedAt"
+    );
+
+    return notes;
+  }
+
   public async updateNote(
     user: Types.ObjectId,
     noteId: string,

@@ -39,4 +39,6 @@ router.patch(
   NoteController.handleFavorite
 );
 
+router.get("/favorites", NoteController.getFavorites);
+
 export default router;
