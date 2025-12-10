@@ -116,13 +116,15 @@ export default class NoteController {
       params: { noteId },
     } = req;
 
-    const isToggled = await noteService.toggleFavorite(userId!, noteId);
+    const note = await noteService.toggleFavorite(userId!, noteId);
 
-    if (!isToggled) return next(new AppError("Note not found", 404));
+    if (!note) return next(new AppError("Note not found", 404));
 
     res.status(200).json({
       status: "success",
-      message: "Note favorite status toggled successfully",
+      data: {
+        note,
+      },
     });
   }
 

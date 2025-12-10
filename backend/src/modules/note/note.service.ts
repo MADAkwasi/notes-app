@@ -56,12 +56,15 @@ export class NoteService {
   public async toggleFavorite(
     user: Types.ObjectId,
     noteId: string
-  ): Promise<boolean> {
-    const result = await Note.updateOne({ user, _id: noteId }, [
-      { $set: { isFavorite: { $not: "$isFavorite" } } },
-    ]);
+  ): Promise<INoteDocument | null> {
+    const note = await Note.findOne({ user, _id: noteId });
+    
+    if (!note) return null;
 
-    return result.modifiedCount > 0;
+    note.isFavorite = !note.isFavorite;
+    await note.save();
+
+    return note;
   }
 
   public async getFavoriteNotes(
