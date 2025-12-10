@@ -9,6 +9,7 @@ export const endpoints = {
     getUserNotes: "/notes/my-notes",
     handleNote: (id: string) => `/notes/${id}`,
     restoreNote: (id: string) => `/notes/${id}/restore`,
+    handleFavoriteStatus: (id: string) => `/notes/${id}/favorite`,
     getDeletedNotes: "/notes/my-notes/deleted",
     postNote: "/notes",
     getFavorites: "/notes/my-notes/favorites",

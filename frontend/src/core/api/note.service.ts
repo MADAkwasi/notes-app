@@ -79,3 +79,11 @@ export async function restoreNoteRequest(
 
   return res;
 }
+
+export async function handleFavoriteStatusRequest(id: string): Promise<Note> {
+  const { data: res } = await api.patch<NoteResponse>(
+    notesEndpoints.handleFavoriteStatus(id)
+  );
+
+  return res.data.note;
+}

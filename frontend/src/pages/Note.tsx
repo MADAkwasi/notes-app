@@ -16,6 +16,7 @@ import {
   deleteNoteRequest,
   editNoteRequest,
   getNoteRequest,
+  handleFavoriteStatusRequest,
 } from "../core/api/note.service";
 import type { EditNoteDTO, Note } from "../utils/interfaces/note.interface";
 import AppButton from "../components/Button";
@@ -40,6 +41,11 @@ export default function NotePage(): ReactElement {
     isLoading: isSubmitting,
     error: editError,
   } = useRequest(editNoteRequest);
+  const {
+    execute: toggleFavoriteStatus,
+    isLoading: isUpdating,
+    error: favoriteError,
+  } = useRequest(handleFavoriteStatusRequest);
   const { handleSubmit, register, setValue, getValues, reset } = useForm();
 
   const handleEditMode = () => {
@@ -84,12 +90,33 @@ export default function NotePage(): ReactElement {
       console.log(data);
       if (data?.status === "success") {
         toast.success(data.message);
+        setUserNote(null);
         navigate("/");
         setIsMenuOpen(false);
       }
       if (deleteError) toast.error(deleteError);
     };
     void deleteUserNote();
+  };
+
+  const handleFavoriteStatus = () => {
+    const toggleFavorite = async () => {
+      if (!id) return;
+      const updatedNote = await toggleFavoriteStatus(id);
+      if (updatedNote) {
+        setUserNote(updatedNote);
+        setIsMenuOpen(false);
+        toast.success(
+          updatedNote.isFavorite
+            ? "Note added to favorites!"
+            : "Note removed from favorites!"
+        );
+      }
+
+      if (favoriteError) toast.error(favoriteError);
+    };
+
+    void toggleFavorite();
   };
 
   useEffect(() => {
@@ -156,11 +183,18 @@ export default function NotePage(): ReactElement {
               >
                 <AppButton
                   variant="tertiary"
-                  title="Add to Favorites"
+                  title={
+                    userNote.isFavorite
+                      ? "Remove from Favorites"
+                      : "Add to Favorites"
+                  }
                   className="text-white text-sm rounded-none border-b border-b-white px-4"
-                  disabled={isDeleting}
+                  disabled={isDeleting || isUpdating}
+                  onClick={handleFavoriteStatus}
                 >
-                  Add to favorites
+                  {userNote.isFavorite
+                    ? "Remove from Favorites"
+                    : " Add to favorites"}
                 </AppButton>
 
                 <AppButton
@@ -168,7 +202,7 @@ export default function NotePage(): ReactElement {
                   title="Edit Note"
                   className="text-white text-sm rounded-none border-b border-b-white px-4"
                   onClick={handleEditMode}
-                  disabled={isDeleting}
+                  disabled={isDeleting || isUpdating}
                 >
                   Edit Note
                 </AppButton>
@@ -178,7 +212,7 @@ export default function NotePage(): ReactElement {
                   title="Delete Note"
                   className="text-white text-sm rounded-none px-4"
                   onClick={handleDeleteNote}
-                  disabled={isDeleting}
+                  disabled={isDeleting || isUpdating}
                 >
                   Delete Note
                 </AppButton>
