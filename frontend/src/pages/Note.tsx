@@ -127,6 +127,12 @@ export default function NotePage(): ReactElement {
 
   return (
     <>
+      <Activity mode={isLoading ? "visible" : "hidden"}>
+        <section className="flex flex-col text-white text-center justify-center items-center w-full h-full gap-3 px-6 bg-[#121212]">
+          <FiLoader className="animate-spin text-2xl" />
+        </section>
+      </Activity>
+
       {userNote && !isLoading && (
         <section className="py-6 px-4 text-white h-full w-full overflow-hidden bg-[#121212]">
           <div className="flex items-center justify-between relative">
