@@ -16,6 +16,8 @@ router.route("/my-notes").get(NoteController.getUserNotes);
 
 router.route("/my-notes/deleted").get(NoteController.getDeletedNotes);
 
+router.route("/my-notes/favorites").get(NoteController.getFavorites);
+
 router
   .route("/")
   .get(NoteController.getNotes)
@@ -38,7 +40,5 @@ router.patch(
   validate(noteParamSchema),
   NoteController.handleFavorite
 );
-
-router.get("/favorites", NoteController.getFavorites);
 
 export default router;
