@@ -32,7 +32,7 @@ export default function FavoritesPage(): ReactElement {
   }, [getFavorites, error]);
 
   return (
-    <>
+    <section className="p-6 bg-[#121212] w-full h-full overflow-y-auto">
       <Activity
         mode={isLoading || favoriteNotes.length === 0 ? "visible" : "hidden"}
       >
@@ -56,7 +56,7 @@ export default function FavoritesPage(): ReactElement {
 
       <Activity mode={favoriteNotes.length > 0 ? "visible" : "hidden"}>
         <section
-          className={`text-white grid w-full h-full gap-3 p-6 bg-[#121212] overflow-y-auto ${
+          className={`text-white grid gap-3 auto-rows-auto ${
             isNotesListOpen ? "grid-cols-2" : "grid-cols-3"
           }`}
         >
@@ -67,6 +67,6 @@ export default function FavoritesPage(): ReactElement {
           ))}
         </section>
       </Activity>
-    </>
+    </section>
   );
 }

@@ -1,7 +1,10 @@
 import { Activity, useEffect, useState } from "react";
 import { TbTrashOff } from "react-icons/tb";
 import type { Note } from "../utils/interfaces/note.interface";
-import { getDeletedNotesRequest } from "../core/api/note.service";
+import {
+  getDeletedNotesRequest,
+  restoreNoteRequest,
+} from "../core/api/note.service";
 import { useRequest } from "../utils/hooks/useRequest";
 import { toast } from "react-toastify";
 import { FiLoader } from "react-icons/fi";
@@ -16,6 +19,27 @@ export default function RecycleBinPage() {
     isLoading,
     error,
   } = useRequest(getDeletedNotesRequest);
+  const {
+    execute: restoreNote,
+    isLoading: isRestoring,
+    error: restoreError,
+  } = useRequest(restoreNoteRequest);
+
+  const handleNoteRestore = (id: string) => {
+    const restore = async () => {
+      const restoredNote = await restoreNote(id);
+      if (restoredNote?.status === "success") {
+        setDeletedNotes((prevNotes) =>
+          prevNotes.filter((note) => note._id !== id)
+        );
+        toast.success("Note restored successfully");
+      }
+
+      if (restoreError) toast.error(restoreError);
+    };
+
+    void restore();
+  };
 
   useEffect(() => {
     const fetchDeletedNotes = async () => {
@@ -29,7 +53,7 @@ export default function RecycleBinPage() {
   }, [getDeletedNotes, error]);
 
   return (
-    <>
+    <section className="p-6 bg-[#121212] w-full h-full overflow-y-auto">
       <Activity
         mode={isLoading || deletedNotes.length === 0 ? "visible" : "hidden"}
       >
@@ -50,16 +74,22 @@ export default function RecycleBinPage() {
       </Activity>
 
       <Activity mode={deletedNotes.length > 0 ? "visible" : "hidden"}>
-        <section
-          className={`text-white grid w-full h-full gap-3 p-6 bg-[#121212] overflow-y-auto ${
+        <div
+          className={`text-white grid gap-3 auto-rows-auto ${
             isNotesListOpen ? "grid-cols-2" : "grid-cols-3"
           }`}
         >
           {deletedNotes.map((note) => (
-            <NoteItem note={note} isDeleted={true} />
+            <NoteItem
+              note={note}
+              isDeleted={true}
+              onRestore={handleNoteRestore}
+              isLoading={isRestoring}
+              key={note._id}
+            />
           ))}
-        </section>
+        </div>
       </Activity>
-    </>
+    </section>
   );
 }
