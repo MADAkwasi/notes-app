@@ -47,3 +47,10 @@ export interface NoteDeletedResponse {
   status: string;
   message: string;
 }
+
+export interface NoteContextType {
+  notes: Note[];
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+  deletedNotes: Note[];
+  setDeletedNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+}
