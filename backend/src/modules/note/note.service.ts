@@ -44,13 +44,18 @@ export class NoteService {
   public async restoreNote(
     user: Types.ObjectId,
     noteId: string
-  ): Promise<boolean> {
-    const result = await Note.updateOne(
-      { user, _id: noteId },
-      { deletedAt: null }
-    );
+  ): Promise<INoteDocument | null> {
+    const restoredNote = await Note.findOneAndUpdate(
+      {
+        user,
+        _id: noteId,
+        includeDeleted: true,
+      },
+      { $set: { deletedAt: null } },
+      { new: true }
+    ).select("-__v -deletedAt");
 
-    return result.modifiedCount > 0;
+    return restoredNote;
   }
 
   public async toggleFavorite(
@@ -58,7 +63,7 @@ export class NoteService {
     noteId: string
   ): Promise<INoteDocument | null> {
     const note = await Note.findOne({ user, _id: noteId });
-    
+
     if (!note) return null;
 
     note.isFavorite = !note.isFavorite;

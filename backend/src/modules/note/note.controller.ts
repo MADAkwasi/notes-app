@@ -96,13 +96,15 @@ export default class NoteController {
       params: { noteId },
     } = req;
 
-    const isRestored = await noteService.restoreNote(userId!, noteId);
+    const note = await noteService.restoreNote(userId!, noteId);
 
-    if (!isRestored) return next(new AppError("Note not found", 404));
+    if (!note) return next(new AppError("Note not found", 404));
 
     res.status(200).json({
       status: "success",
-      message: "Note restored successfully",
+      data: {
+        note,
+      },
     });
   }
 
