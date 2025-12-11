@@ -84,7 +84,7 @@ export default function DashboardLayout(): ReactElement {
               <NavigationOption group={additionalNavigation} />
             </div>
 
-            <div className="mt-auto text-white flex items-center gap-3 justify-between">
+            <div className="mt-auto mb-3 text-white flex items-center gap-3 justify-between">
               <span className="rounded-full bg-gray-400 h-12 w-12"></span>
               <span className="w-[calc(100%-4rem)] flex items-center justify-between">
                 {user && <h5>{user.name}</h5>}
