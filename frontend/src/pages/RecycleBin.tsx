@@ -1,6 +1,5 @@
-import { Activity, useEffect, useState } from "react";
+import { Activity, useEffect } from "react";
 import { TbTrashOff } from "react-icons/tb";
-import type { Note } from "../utils/interfaces/note.interface";
 import {
   getDeletedNotesRequest,
   restoreNoteRequest,
@@ -10,9 +9,10 @@ import { toast } from "react-toastify";
 import { FiLoader } from "react-icons/fi";
 import NoteItem from "../components/NoteItem";
 import { useUIInteractions } from "../utils/hooks/useInteraction";
+import { useNotes } from "../utils/hooks/useNote";
 
 export default function RecycleBinPage() {
-  const [deletedNotes, setDeletedNotes] = useState<Note[]>([]);
+  const { deletedNotes, setDeletedNotes, setNotes } = useNotes();
   const { isNotesListOpen } = useUIInteractions();
   const {
     execute: getDeletedNotes,
@@ -28,10 +28,10 @@ export default function RecycleBinPage() {
   const handleNoteRestore = (id: string) => {
     const restore = async () => {
       const restoredNote = await restoreNote(id);
-      if (restoredNote?.status === "success") {
-        setDeletedNotes((prevNotes) =>
-          prevNotes.filter((note) => note._id !== id)
-        );
+      if (restoredNote) {
+        setDeletedNotes((notes) => notes.filter((note) => note._id !== id));
+        setNotes((notes) => [...notes, restoredNote]);
+
         toast.success("Note restored successfully");
       }
 
@@ -50,7 +50,7 @@ export default function RecycleBinPage() {
     };
 
     void fetchDeletedNotes();
-  }, [getDeletedNotes, error]);
+  }, [getDeletedNotes, setDeletedNotes, error]);
 
   return (
     <section className="p-6 bg-[#121212] w-full h-full overflow-y-auto">

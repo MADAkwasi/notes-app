@@ -1,7 +1,6 @@
-import { Activity, useEffect, useState, type ReactElement } from "react";
-import { FaSearch } from "react-icons/fa";
+import { Activity, useEffect, type ReactElement } from "react";
 import { FiLogOut } from "react-icons/fi";
-import { IoMdAdd } from "react-icons/io";
+import { FaPlus } from "react-icons/fa6";
 import { Link, Outlet } from "react-router-dom";
 import AppButton from "../../components/Button";
 import NavigationOption from "../../components/NavigationOption";
@@ -13,14 +12,14 @@ import DashboardSkeleton from "../../components/DashboardSkeleton";
 import { useAuth } from "../../utils/hooks/useAuth";
 import { useRequest } from "../../utils/hooks/useRequest";
 import { getUserNotesRequest } from "../api/note.service";
-import type { Note } from "../../utils/interfaces/note.interface";
 import { toast } from "react-toastify";
 import NoteList from "../../components/NoteList";
 import { useUIInteractions } from "../../utils/hooks/useInteraction";
 import NoteForm from "../../components/NoteForm";
+import { useNotes } from "../../utils/hooks/useNote";
 
 export default function DashboardLayout(): ReactElement {
-  const [userNotes, setUserNotes] = useState<Note[] | null>(null);
+  const { notes, setNotes } = useNotes();
   const { isNotesListOpen, isNoteFormOpen, openNoteForm } = useUIInteractions();
   const { user, logout, refreshUser, isFetchingUser } = useAuth();
   const {
@@ -35,16 +34,17 @@ export default function DashboardLayout(): ReactElement {
 
   useEffect(() => {
     const fetchNotes = async () => {
-      const notes = await getNotes();
-      setUserNotes(notes);
+      const userNote = await getNotes();
+
+      if (userNote) setNotes(userNote);
 
       if (error) toast.error(error);
     };
 
-    if (!userNotes) {
+    if (notes.length === 0) {
       void fetchNotes();
     }
-  }, [getNotes, userNotes, error]);
+  }, [getNotes, notes, setNotes, error]);
 
   useEffect(() => {
     if (!user) void refreshUser();
@@ -57,30 +57,30 @@ export default function DashboardLayout(): ReactElement {
       ) : (
         <main className="flex h-screen relative">
           <section className="w-1/4 pt-6 px-4 flex flex-col gap-4">
-            <header className="flex flex-col gap-4">
-              <div className="flex items-center justify-between ">
-                <Link to="/">
-                  <img src="logo.svg" alt="logo" />
-                </Link>
+            <header className="flex gap-4 items-center justify-between ">
+              <Link to="/">
+                <img src="logo.svg" alt="logo" />
+              </Link>
 
-                <AppButton
+              {/* <AppButton
                   title="Search Note"
                   variant="tertiary"
                   className="w-fit!"
                 >
                   <FaSearch className="text-white text-xl" />
-                </AppButton>
-              </div>
-
-              <AppButton title="Create a new note" onClick={openNoteForm}>
-                <IoMdAdd /> New Note
+                </AppButton> */}
+              <AppButton
+                title="Create a new note"
+                variant="tertiary"
+                className="w-fit!"
+                onClick={openNoteForm}
+              >
+                <FaPlus className="text-white text-xl" />
               </AppButton>
             </header>
 
             <div className="my-3 flex flex-col gap-4">
-              {userNotes && (
-                <NavigationOption group={recentNavigationGroup(userNotes)} />
-              )}
+              <NavigationOption group={recentNavigationGroup(notes)} />
               <NavigationOption group={additionalNavigation} />
             </div>
 
@@ -101,7 +101,7 @@ export default function DashboardLayout(): ReactElement {
           </section>
           <Activity mode={isNotesListOpen ? "visible" : "hidden"}>
             <section className="w-1/4 bg-[#1c1c1c] transition-all duration-200">
-              <NoteList notes={userNotes ?? []} />
+              <NoteList />
             </section>
           </Activity>
 

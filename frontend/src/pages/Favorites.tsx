@@ -1,21 +1,57 @@
-import { Activity, useEffect, useState, type ReactElement } from "react";
+import { Activity, useEffect, type ReactElement } from "react";
 import { LuStarOff } from "react-icons/lu";
 import { useRequest } from "../utils/hooks/useRequest";
-import { getFavoriteNotesRequest } from "../core/api/note.service";
-import type { Note } from "../utils/interfaces/note.interface";
+import {
+  getFavoriteNotesRequest,
+  handleFavoriteStatusRequest,
+} from "../core/api/note.service";
 import NoteItem from "../components/NoteItem";
 import { useUIInteractions } from "../utils/hooks/useInteraction";
 import { FiLoader } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useNotes } from "../utils/hooks/useNote";
 
 export default function FavoritesPage(): ReactElement {
-  const [favoriteNotes, setFavoriteNotes] = useState<Note[]>([]);
+  const { setNotes, favoriteNotes, setFavoriteNotes } = useNotes();
   const { isNotesListOpen } = useUIInteractions();
   const {
     execute: getFavorites,
     isLoading,
     error,
   } = useRequest(getFavoriteNotesRequest);
+  const {
+    execute: toggleFavoriteStatus,
+    isLoading: isToggling,
+    error: toggleError,
+  } = useRequest(handleFavoriteStatusRequest);
+
+  const handleFavoriteStatus = (id: string) => {
+    const toggleFavorite = async () => {
+      const updatedNote = await toggleFavoriteStatus(id);
+      if (updatedNote) {
+        setNotes((notes) =>
+          notes.map((note) =>
+            updatedNote._id === note._id ? updatedNote : note
+          )
+        );
+
+        setFavoriteNotes((notes) =>
+          notes.filter((note) => note._id !== updatedNote._id)
+        );
+
+        toast.success(
+          updatedNote.isFavorite
+            ? "Note added to favorites!"
+            : "Note removed from favorites!"
+        );
+      }
+
+      if (toggleError) toast.error(toggleError);
+    };
+
+    void toggleFavorite();
+  };
 
   useEffect(() => {
     async function fetchFavorites() {
@@ -29,7 +65,7 @@ export default function FavoritesPage(): ReactElement {
     }
 
     void fetchFavorites();
-  }, [getFavorites, error]);
+  }, [getFavorites, setFavoriteNotes, error]);
 
   return (
     <section className="p-6 bg-[#121212] w-full h-full overflow-y-auto">
@@ -54,7 +90,9 @@ export default function FavoritesPage(): ReactElement {
         </section>
       </Activity>
 
-      <Activity mode={favoriteNotes.length > 0 ? "visible" : "hidden"}>
+      <Activity
+        mode={favoriteNotes.length > 0 && !isLoading ? "visible" : "hidden"}
+      >
         <section
           className={`text-white grid gap-3 auto-rows-auto ${
             isNotesListOpen ? "grid-cols-2" : "grid-cols-3"
@@ -62,7 +100,11 @@ export default function FavoritesPage(): ReactElement {
         >
           {favoriteNotes.map((note) => (
             <Link to={`/notes/${note._id}`} key={note._id}>
-              <NoteItem note={note} />
+              <NoteItem
+                note={note}
+                handleFavoriteStatus={handleFavoriteStatus}
+                isLoading={isToggling}
+              />
             </Link>
           ))}
         </section>

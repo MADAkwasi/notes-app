@@ -26,7 +26,7 @@ export default function NavigationOption({
 
         <Activity
           mode={
-            group.title === "Recent" && group.routes.length > 2
+            group.title === "Recent" && group.routes.length > 3
               ? "visible"
               : "hidden"
           }
@@ -42,7 +42,7 @@ export default function NavigationOption({
       </span>
 
       <ul className="flex flex-col">
-        {group.routes.slice(0, 2).map(({ id, path, label, icon: Icon }) => (
+        {group.routes.slice(0, 3).map(({ id, path, label, icon: Icon }) => (
           <NavLink
             to={path}
             key={id}

@@ -70,14 +70,12 @@ export async function deleteNoteRequest(
   return res;
 }
 
-export async function restoreNoteRequest(
-  id: string
-): Promise<NoteDeletedResponse> {
-  const { data: res } = await api.patch<NoteDeletedResponse>(
+export async function restoreNoteRequest(id: string): Promise<Note> {
+  const { data: res } = await api.patch<NoteResponse>(
     notesEndpoints.restoreNote(id)
   );
 
-  return res;
+  return res.data.note;
 }
 
 export async function handleFavoriteStatusRequest(id: string): Promise<Note> {

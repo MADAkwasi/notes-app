@@ -7,6 +7,7 @@ interface ItemProps {
   isDeleted?: boolean;
   note: Note;
   onRestore?: (id: string) => void;
+  handleFavoriteStatus?: (id: string) => void;
   isLoading?: boolean;
 }
 
@@ -14,6 +15,7 @@ export default function NoteItem({
   note,
   isDeleted = false,
   onRestore,
+  handleFavoriteStatus,
   isLoading = false,
 }: ItemProps): ReactElement {
   return (
@@ -28,19 +30,27 @@ export default function NoteItem({
         <h4 className="text-lg text-white font-semibold">{note.title}</h4>
 
         <Activity mode={!isDeleted ? "visible" : "hidden"}>
-          <AppButton
-            variant="tertiary"
-            title={
-              note.isFavorite ? "Remove from favorites" : "Add to favorites"
-            }
-            className="w-fit! p-0!"
-          >
-            {note.isFavorite ? (
-              <FaStar className="text-white" />
-            ) : (
-              <FaRegStar className="text-white" />
-            )}
-          </AppButton>
+          {handleFavoriteStatus && (
+            <AppButton
+              variant="tertiary"
+              title={
+                note.isFavorite ? "Remove from favorites" : "Add to favorites"
+              }
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleFavoriteStatus(note._id);
+              }}
+              className="w-fit! p-0!"
+              disabled={isLoading}
+            >
+              {note.isFavorite ? (
+                <FaStar className="text-white" />
+              ) : (
+                <FaRegStar className="text-white" />
+              )}
+            </AppButton>
+          )}
         </Activity>
 
         <Activity mode={isDeleted ? "visible" : "hidden"}>

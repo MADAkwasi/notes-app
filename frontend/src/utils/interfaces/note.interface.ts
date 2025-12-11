@@ -53,4 +53,6 @@ export interface NoteContextType {
   setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
   deletedNotes: Note[];
   setDeletedNotes: React.Dispatch<React.SetStateAction<Note[]>>;
+  favoriteNotes: Note[];
+  setFavoriteNotes: React.Dispatch<React.SetStateAction<Note[]>>;
 }

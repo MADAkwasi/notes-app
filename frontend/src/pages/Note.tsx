@@ -22,8 +22,10 @@ import type { EditNoteDTO, Note } from "../utils/interfaces/note.interface";
 import AppButton from "../components/Button";
 import { useForm } from "react-hook-form";
 import { FiLoader } from "react-icons/fi";
+import { useNotes } from "../utils/hooks/useNote";
 
 export default function NotePage(): ReactElement {
+  const { setNotes } = useNotes();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [userNote, setUserNote] = useState<Note | null>(null);
@@ -91,6 +93,7 @@ export default function NotePage(): ReactElement {
       if (data?.status === "success") {
         toast.success(data.message);
         setUserNote(null);
+        setNotes((notes) => notes.filter((note) => note._id !== id));
         navigate("/");
         setIsMenuOpen(false);
       }
