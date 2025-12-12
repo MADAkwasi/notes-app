@@ -18,6 +18,7 @@ export interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isFetchingUser: boolean;
+  hasTriedFetchingUser: boolean;
   error: string | null;
   login: (data: LoginData) => Promise<void>;
   signup: (data: SignupData) => Promise<void>;

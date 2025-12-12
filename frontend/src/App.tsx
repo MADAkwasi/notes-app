@@ -6,15 +6,18 @@ import RecycleBinPage from "./pages/RecycleBin";
 import NotePage from "./pages/Note";
 import FavoritesPage from "./pages/Favorites";
 import DashboardLayout from "./core/layouts/DashboardLayout";
+import AuthGuard from "./core/guards/AuthGuard";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<DashboardLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path="/notes/:id" element={<NotePage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
-        <Route path="/recycle-bin" element={<RecycleBinPage />} />
+      <Route element={<AuthGuard />}>
+        <Route path="/" element={<DashboardLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/notes/:id" element={<NotePage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/recycle-bin" element={<RecycleBinPage />} />
+        </Route>
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />

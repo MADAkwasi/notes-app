@@ -46,6 +46,7 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingUser, setIsFetchingUser] = useState(false);
+  const [hasTriedFetchingUser, setHasTriedFetchingUser] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const getErrorMessage = (err: unknown): string => {
@@ -62,23 +63,22 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
     try {
       setError(null);
       setIsFetchingUser(true);
-      const user = await getLoggedInUser();
-      if (!user) {
+
+      const loggedInUser = await getLoggedInUser();
+
+      if (loggedInUser) {
+        setUser(loggedInUser);
+      } else {
         setUser(null);
-        navigate("/login");
-        return;
       }
-      setUser(user);
     } catch (err: unknown) {
       setUser(null);
-
       setError(getErrorMessage(err));
-
-      navigate("/login");
     } finally {
       setIsFetchingUser(false);
+      setHasTriedFetchingUser(true);
     }
-  }, [navigate]);
+  }, []);
 
   const login = useCallback(
     async (data: LoginData) => {
@@ -135,8 +135,19 @@ export function AuthProvider({ children }: Readonly<AuthProviderProps>) {
       refreshUser,
       isFetchingUser,
       signup,
+      hasTriedFetchingUser,
     }),
-    [user, isLoading, error, isFetchingUser, login, logout, refreshUser, signup]
+    [
+      user,
+      isLoading,
+      error,
+      isFetchingUser,
+      login,
+      logout,
+      refreshUser,
+      signup,
+      hasTriedFetchingUser,
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
