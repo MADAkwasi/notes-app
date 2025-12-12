@@ -18,7 +18,7 @@ import { useUIInteractions } from "../../utils/hooks/useInteraction";
 import NoteForm from "../../components/NoteForm";
 import { useNotes } from "../../utils/hooks/useNote";
 
-export default function DashboardLayout(): ReactElement {
+export default function DesktopLayout(): ReactElement {
   const { notes, setNotes } = useNotes();
   const { isNotesListOpen, isNoteFormOpen, openNoteForm } = useUIInteractions();
   const { user, logout, refreshUser, isFetchingUser } = useAuth();
@@ -62,13 +62,6 @@ export default function DashboardLayout(): ReactElement {
                 <img src="logo.svg" alt="logo" />
               </Link>
 
-              {/* <AppButton
-                  title="Search Note"
-                  variant="tertiary"
-                  className="w-fit!"
-                >
-                  <FaSearch className="text-white text-xl" />
-                </AppButton> */}
               <AppButton
                 title="Create a new note"
                 variant="tertiary"

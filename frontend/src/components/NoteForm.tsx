@@ -77,12 +77,12 @@ export default function NoteForm(): ReactElement {
           animate="visible"
           exit="exit"
           onClick={(e) => e.stopPropagation()}
-          className="w-1/2 shadow-lg bg-[#1c1c1c] px-6 py-8 flex flex-col gap-4 rounded-md"
+          className="w-full h-full md:h-auto md:w-3/4 lg:w-1/2 relative justify-center shadow-lg bg-[#1c1c1c] px-6 py-8 flex flex-col gap-4 rounded-md"
           onSubmit={handleSubmit(onSubmit)}
         >
           <AppButton
             variant="tertiary"
-            className="w-fit! p-0! ml-auto"
+            className="w-fit! p-0! ml-auto md:static absolute top-6 right-4"
             onClick={handleFormClose}
           >
             <IoClose className="text-white text-2xl" />

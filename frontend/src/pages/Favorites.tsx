@@ -11,6 +11,7 @@ import { FiLoader } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNotes } from "../utils/hooks/useNote";
+import NoteItemSkeleton from "../components/NoteItemSkeleton";
 
 export default function FavoritesPage(): ReactElement {
   const { setNotes, favoriteNotes, setFavoriteNotes } = useNotes();
@@ -72,20 +73,28 @@ export default function FavoritesPage(): ReactElement {
       <Activity
         mode={isLoading || favoriteNotes.length === 0 ? "visible" : "hidden"}
       >
-        <section className="flex flex-col text-white text-center justify-center items-center w-full h-full gap-3 px-6 bg-[#121212]">
+        <section className="flex flex-col text-white text-center lg:justify-center lg:items-center w-full h-full gap-3 lg:px-6 bg-[#121212]">
           <Activity
             mode={
               favoriteNotes.length === 0 && !isLoading ? "visible" : "hidden"
             }
           >
-            <LuStarOff className="text-white text-6xl" />
-            <h2 className="text-3xl font-semibold">
-              No note has been added to Favorites
-            </h2>
+            <div className="flex flex-col justify-center items-center gap-3 h-full mb-8">
+              <LuStarOff className="text-white text-4xl md:text-6xl" />
+              <h2 className="text-xl md:text-3xl font-semibold">
+                No note has been added to Favorites
+              </h2>
+            </div>
           </Activity>
 
           <Activity mode={isLoading ? "visible" : "hidden"}>
-            <FiLoader className="animate-spin text-2xl" />
+            <section className="lg:hidden w-full gap-6 py-8 bg-[#121212] grid grid-cols-1 md:grid-cols-2">
+              <NoteItemSkeleton />
+            </section>
+
+            <div className="hidden lg:block">
+              <FiLoader className="animate-spin text-2xl" />
+            </div>
           </Activity>
         </section>
       </Activity>
@@ -94,8 +103,8 @@ export default function FavoritesPage(): ReactElement {
         mode={favoriteNotes.length > 0 && !isLoading ? "visible" : "hidden"}
       >
         <section
-          className={`text-white grid gap-3 auto-rows-auto ${
-            isNotesListOpen ? "grid-cols-2" : "grid-cols-3"
+          className={`text-white grid gap-3 auto-rows-auto grid-cols-1 md:grid-cols-2 ${
+            isNotesListOpen ? "lg:grid-cols-2" : "lg:grid-cols-3"
           }`}
         >
           {favoriteNotes.map((note) => (

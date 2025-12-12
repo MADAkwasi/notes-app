@@ -10,6 +10,7 @@ import { FiLoader } from "react-icons/fi";
 import NoteItem from "../components/NoteItem";
 import { useUIInteractions } from "../utils/hooks/useInteraction";
 import { useNotes } from "../utils/hooks/useNote";
+import NoteItemSkeleton from "../components/NoteItemSkeleton";
 
 export default function RecycleBinPage() {
   const { deletedNotes, setDeletedNotes, setNotes } = useNotes();
@@ -57,26 +58,36 @@ export default function RecycleBinPage() {
       <Activity
         mode={isLoading || deletedNotes.length === 0 ? "visible" : "hidden"}
       >
-        <section className="flex flex-col text-white text-center justify-center items-center w-full h-full gap-3 px-6 bg-[#121212]">
+        <section className="flex flex-col text-white text-center lg:justify-center lg:items-center w-full h-full gap-3 lg:px-6 bg-[#121212]">
           <Activity
             mode={
               deletedNotes.length === 0 && !isLoading ? "visible" : "hidden"
             }
           >
-            <TbTrashOff className="text-white text-6xl" />
-            <h2 className="text-3xl font-semibold">Recycle Bin is empty</h2>
+            <div className="flex flex-col justify-center items-center gap-3 h-full mb-8">
+              <TbTrashOff className="text-white text-4xl md:text-6xl" />
+              <h2 className="text-xl md:text-3xl font-semibold">
+                Recycle Bin is empty
+              </h2>
+            </div>
           </Activity>
 
           <Activity mode={isLoading ? "visible" : "hidden"}>
-            <FiLoader className="animate-spin text-2xl" />
+            <section className="lg:hidden w-full gap-6 py-8 bg-[#121212] grid grid-cols-1 md:grid-cols-2">
+              <NoteItemSkeleton />
+            </section>
+
+            <div className="hidden lg:block">
+              <FiLoader className="animate-spin text-2xl" />
+            </div>
           </Activity>
         </section>
       </Activity>
 
       <Activity mode={deletedNotes.length > 0 ? "visible" : "hidden"}>
         <div
-          className={`text-white grid gap-3 auto-rows-auto ${
-            isNotesListOpen ? "grid-cols-2" : "grid-cols-3"
+          className={`text-white grid gap-3 auto-rows-auto grid-cols-1 md:grid-cols-2 ${
+            isNotesListOpen ? "lg:grid-cols-2" : "lg:grid-cols-3"
           }`}
         >
           {deletedNotes.map((note) => (
