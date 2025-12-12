@@ -27,7 +27,9 @@ export default function NoteItem({
       }`}
     >
       <span className="flex items-center justify-between gap-2">
-        <h4 className="text-lg text-white font-semibold">{note.title}</h4>
+        <h4 className="text-lg text-white font-semibold text-left">
+          {note.title}
+        </h4>
 
         <Activity mode={!isDeleted ? "visible" : "hidden"}>
           {handleFavoriteStatus && (

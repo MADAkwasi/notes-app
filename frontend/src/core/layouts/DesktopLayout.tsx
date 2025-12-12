@@ -30,21 +30,20 @@ export default function DesktopLayout(): ReactElement {
 
   const handleLogout = async () => {
     await logout();
+    setNotes([])
   };
 
   useEffect(() => {
+    if (notes.length > 0) return;
+
     const fetchNotes = async () => {
       const userNote = await getNotes();
-
       if (userNote) setNotes(userNote);
-
       if (error) toast.error(error);
     };
 
-    if (notes.length === 0) {
-      void fetchNotes();
-    }
-  }, [getNotes, notes, setNotes, error]);
+    void fetchNotes();
+  }, [getNotes, error, setNotes, notes.length]);
 
   useEffect(() => {
     if (!user) void refreshUser();

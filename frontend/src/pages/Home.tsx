@@ -25,18 +25,16 @@ export default function HomePage() {
   } = useRequest(getUserNotesRequest);
 
   useEffect(() => {
+    if (notes.length > 0) return;
+
     const fetchNotes = async () => {
       const userNote = await getNotes();
-
       if (userNote) setNotes(userNote);
-
       if (error) toast.error(error);
     };
 
-    if (notes.length === 0) {
-      void fetchNotes();
-    }
-  }, [getNotes, notes, setNotes, error]);
+    void fetchNotes();
+  }, [getNotes, error, setNotes, notes.length]);
 
   const handleFavoriteStatus = (id: string) => {
     const toggleFavorite = async () => {

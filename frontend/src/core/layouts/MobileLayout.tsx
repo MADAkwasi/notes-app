@@ -9,14 +9,17 @@ import { useAuth } from "../../utils/hooks/useAuth";
 import { FiLogOut } from "react-icons/fi";
 import { FaPlus, FaRegStar, FaRegTrashAlt } from "react-icons/fa";
 import { HiHome } from "react-icons/hi2";
+import { useNotes } from "../../utils/hooks/useNote";
 
 export default function MobileLayout(): ReactElement {
+  const { setNotes } = useNotes();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isNoteFormOpen, openNoteForm } = useUIInteractions();
   const { user, logout, refreshUser } = useAuth();
 
   const handleLogout = async () => {
     await logout();
+    setNotes([]);
   };
 
   useEffect(() => {
